@@ -1,0 +1,6 @@
+---
+# defaults file for roles/install_minishift
+docker_machine_driver_url: https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-centos7
+minishift_url: https://github.com/minishift/minishift/releases/download/v1.34.1/minishift-1.34.1-linux-amd64.tgz
+os_user: "{{ ansible_user_id }}"
+install_dir: "{{ im_home_dir }}/minishift"

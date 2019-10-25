@@ -1,0 +1,97 @@
+---
+# Tasks list for installing minishift
+#
+- name: Installing required packages
+  dnf:
+    name: "{{ im_packages }}"
+    state: latest
+
+- name: Creating libvirt group if not present
+  group:
+    name: "{{ item }}" 
+    state: present
+    system: true
+  loop: "{{ im_groups }}"
+
+- name: Adding current user to libvirt group
+  user:
+    name: "{{ os_user }}"
+    groups: libvirt
+
+- name: Installing docker-machine-kvm
+  get_url:
+    url: "{{ docker_machine_driver_url }}"
+    dest: /usr/local/bin/docker-machine-driver-kvm
+    mode: a+x
+
+- name: Starting and enabling libvirtd service
+  service:
+    name: "{{ im_libvirtd_service }}"
+    state: started
+    enabled: true
+
+- name: Manage default libvirt interface
+  virt_net:
+    name: default
+    autostart: true
+    state: active
+
+- name: Create temporary dir for storing files
+  tempfile:
+    state: directory
+  register: tempdir
+
+- name: Downloading minishift package
+  get_url:
+    url: "{{ minishift_url }}"
+    dest: "{{ tempdir.path }}"
+  register: minishift_package
+
+- name: Creates minishift directory in {{ os_user }} home_directory
+  file:
+    state: directory
+    path: "{{ install_dir }}"
+
+- name: Unpack stuff
+  unarchive:
+    remote_src: yes
+    src: "{{ minishift_package.dest }}"
+    dest: "{{ tempdir.path }}"
+    list_files: yes
+    owner: "{{ os_user }}"
+    group: "{{ os_user }}"
+    mode: u+x,g+x
+  register: archive_contents
+
+- name: Rename target directory
+  copy:
+    remote_src: true
+    src: "{{ tempdir.path }}/{{ archive_contents.files[0] }}"
+    dest: "{{ install_dir }}"
+    owner: "{{ os_user }}"
+    group: "{{ os_user }}"
+
+- name: Delete downloaded package
+  file:
+    path: "{{ minishift_package.dest }}"
+    state: absent
+
+- name: Clean extracted directory
+  file:
+    path: "{{ tempdir.path }}"
+    state: absent
+  when: tempdir.path is defined
+
+- name: Set correct permissions on minishift directory
+  file:
+    state: directory
+    path: "{{ install_dir }}"
+    owner: "{{ os_user }}"
+    group: "{{ os_user }}"
+    mode: u+x,g+x
+    recurse: true
+
+- name: Add minishit to environment path for {{ os_user }}
+  copy:
+    content: "PATH=$PATH:{{ install_dir }}"
+    dest: /etc/profile.d/custom_path.sh

@@ -1,0 +1,13 @@
+---
+# vars file for roles/install_minishift
+im_packages:
+  - libvirt
+  - qemu-kvm
+  - python3-lxml
+
+im_groups:
+  - libvirt
+
+im_home_dir: "/home/{{ os_user }}"
+im_libvirtd_service: libvirtd
+
