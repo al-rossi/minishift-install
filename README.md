@@ -45,12 +45,4 @@ To install minishift for user minishift.
            docker_machine_driver_url: https://url/to/correct/release
            minishift_url: https://url/to/correct/release
 
-License
--------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
