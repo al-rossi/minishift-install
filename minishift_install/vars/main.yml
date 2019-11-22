@@ -4,6 +4,7 @@ im_packages:
   - libvirt
   - qemu-kvm
   - python3-lxml
+  - python3-libvirt
 
 im_groups:
   - libvirt

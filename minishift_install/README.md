@@ -39,7 +39,7 @@ To install minishift for user minishift.
 
     - hosts: servers
       roles:
-         - role: install_minishift
+         - role: minishift_install
            os_user: minishift
            install_dir: /path/to/install
            docker_machine_driver_url: https://url/to/correct/release

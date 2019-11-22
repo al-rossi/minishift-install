@@ -1,0 +1,6 @@
+---
+- name: Minishift install
+  hosts: localhost
+  become: true
+  roles:
+    - role: minishift_install
