@@ -11,4 +11,6 @@ im_groups:
 
 im_home_dir: "/home/{{ os_user }}"
 im_libvirtd_service: libvirtd
+im_minishift_url: https://github.com/minishift/minishift/releases/download/v{{ minishift_version }}/minishift-{{ minishift_version }}-linux-amd64.tgz
+im_docker_machine_driver_url: https://github.com/dhiltgen/docker-machine-kvm/releases/download/{{docker-machine-kvm-version}}/docker-machine-driver-kvm-centos7
 

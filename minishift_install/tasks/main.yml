@@ -20,7 +20,7 @@
 
 - name: Installing docker-machine-kvm
   get_url:
-    url: "{{ docker_machine_driver_url }}"
+    url: "{{ im_docker_machine_driver_url }}"
     dest: /usr/local/bin/docker-machine-driver-kvm
     mode: a+x
 
@@ -43,7 +43,7 @@
 
 - name: Downloading minishift package
   get_url:
-    url: "{{ minishift_url }}"
+    url: "{{ im_minishift_url }}"
     dest: "{{ tempdir.path }}"
   register: minishift_package
 
